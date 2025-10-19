@@ -1,9 +1,27 @@
 {% extends 'base.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
 {% block content %}
-<h1>Привет от Хекслета!</h1>
-<p class="lead">Практические курсы по программированию</p>
-<p class="lead">
-    <a href="https://ru.hexlet.io/" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Узнать
-        больше</a>
-</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 mb-4">Добро пожаловать в Менеджер задач!</h1>
+            
+            {% if user.is_authenticated %}
+            <p class="lead">Привет, {{ user.username }}! Рады видеть вас снова.</p>
+            <div class="mt-4">
+                <a href="{% url 'user_list' %}" class="btn btn-primary btn-lg me-3">Список пользователей</a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-lg">Выйти</a>
+            </div>
+            {% else %}
+            <p class="lead">Пожалуйста, войдите в систему или зарегистрируйтесь.</p>
+            <div class="mt-4">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3">Войти</a>
+                <a href="{% url 'create' %}" class="btn btn-outline-light btn-lg">Зарегистрироваться</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
