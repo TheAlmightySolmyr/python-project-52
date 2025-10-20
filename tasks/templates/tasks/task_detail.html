@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h1 class="mb-4">{{ task.name }}</h1>
-            
+
             <div class="card bg-dark text-white">
                 <div class="card-body">
                     <h5 class="card-title">Описание задачи</h5>
@@ -21,7 +21,16 @@
                         <strong>Автор:</strong> {{ task.author.get_full_name|default:task.author.username }}
                     </li>
                     <li class="list-group-item bg-dark text-white">
-                        <strong>Исполнитель:</strong> {{ task.executor.get_full_name|default:task.executor.username|default:"Не назначен" }}
+                        <strong>Исполнитель:</strong> {{
+                        task.executor.get_full_name|default:task.executor.username|default:"Не назначен" }}
+                    </li>
+                    <li class="list-group-item bg-dark text-white">
+                        <strong>Метки:</strong>
+                        {% for label in task.labels.all %}
+                        <span class="badge bg-secondary">{{ label.name }}</span>
+                        {% empty %}
+                        <span class="text-muted">Нет меток</span>
+                        {% endfor %}
                     </li>
                     <li class="list-group-item bg-dark text-white">
                         <strong>Дата создания:</strong> {{ task.created_at|date:"d.m.Y H:i" }}

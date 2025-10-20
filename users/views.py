@@ -1,8 +1,9 @@
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+
 from .forms import UserRegistrationForm, UserUpdateForm
 
 

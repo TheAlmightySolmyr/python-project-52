@@ -5,11 +5,11 @@
 {% block content %}
 <div class="container mt-4">
     <h1 class="mb-4">Задачи</h1>
-    
+
     <a href="/tasks/create/" class="btn btn-primary mb-3">
         Создать задачу
     </a>
-    
+
     <div class="table-responsive">
         <table class="table table-dark table-striped">
             <thead>
@@ -19,6 +19,7 @@
                     <th>Статус</th>
                     <th>Автор</th>
                     <th>Исполнитель</th>
+                    <th>Метки</th>
                     <th>Дата создания</th>
                     <th>Действия</th>
                 </tr>
@@ -33,6 +34,13 @@
                     <td>{{ task.status }}</td>
                     <td>{{ task.author.get_full_name|default:task.author.username }}</td>
                     <td>{{ task.executor.get_full_name|default:task.executor.username|default:"Не назначен" }}</td>
+                    <td>
+                        {% for label in task.labels.all %}
+                        <span class="badge bg-secondary">{{ label.name }}</span>
+                        {% empty %}
+                        <span class="text-muted">—</span>
+                        {% endfor %}
+                    </td>
                     <td>{{ task.created_at|date:"d.m.Y H:i" }}</td>
                     <td>
                         <a href="/tasks/{{ task.id }}/update/" class="btn btn-sm btn-outline-warning me-1">
@@ -45,7 +53,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7" class="text-center">Задачи не найдены</td>
+                    <td colspan="8" class="text-center">Задачи не найдены</td>
                 </tr>
                 {% endfor %}
             </tbody>

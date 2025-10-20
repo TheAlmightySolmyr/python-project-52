@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils import timezone
 
 
@@ -31,6 +31,13 @@ class Task(models.Model):
         null=True,
         verbose_name='Исполнитель'
     )
+    labels = models.ManyToManyField(
+        'labels.Label',
+        through='TaskLabel',
+        through_fields=('task', 'label'),
+        blank=True,
+        verbose_name='Метки'
+    )
     created_at = models.DateTimeField(
         default=timezone.now,
         verbose_name='Дата создания'
@@ -42,3 +49,12 @@ class Task(models.Model):
     class Meta:
         verbose_name = 'Задача'
         verbose_name_plural = 'Задачи'
+
+
+class TaskLabel(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    label = models.ForeignKey('labels.Label', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = ['task', 'label']

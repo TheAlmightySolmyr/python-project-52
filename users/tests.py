@@ -1,7 +1,7 @@
-from django.test import TestCase, Client
-from django.urls import reverse
 from django.contrib.auth.models import User
-from django.contrib.messages import get_messages
+from django.test import Client, TestCase
+from django.urls import reverse
+
 
 class UserCRUDTest(TestCase):
     def setUp(self):
@@ -77,6 +77,7 @@ class UserCRUDTest(TestCase):
         self.assertRedirects(response, reverse('user_list'))
         
         self.assertTrue(User.objects.filter(id=self.user2.id).exists())
+
 
 class AuthenticationTest(TestCase):
     def setUp(self):

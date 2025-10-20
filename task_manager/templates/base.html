@@ -46,13 +46,17 @@
             <div>
                 <h3 class="float-md-start mb-0">Менеджер задач</h3>
                 <nav class="nav nav-masthead justify-content-center float-md-end">
-                    <a class="nav-link" href="{% url 'index' %}">Главная</a>
+                    <a class="nav-link" href="/">Главная</a>
                     {% if user.is_authenticated %}
                     <span class="nav-link">Привет, {{ user.username }}!</span>
                     <a class="nav-link" href="/tasks/">Задачи</a>
                     <a class="nav-link" href="/statuses/">Статусы</a>
+                    <a class="nav-link" href="/labels/">Метки</a>
                     <a class="nav-link" href="/users/">Пользователи</a>
-                    <a class="nav-link" href="/logout/">Выход</a>
+                    <form method="post" action="/logout/" class="nav-form">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link">Выход</button>
+                    </form>
                     {% else %}
                     <a class="nav-link" href="/login/">Вход</a>
                     <a class="nav-link" href="/users/create/">Регистрация</a>
