@@ -5,11 +5,72 @@
 {% block content %}
 <div class="container mt-4">
     <h1 class="mb-4">Задачи</h1>
-
+    
     <a href="/tasks/create/" class="btn btn-primary mb-3">
         Создать задачу
     </a>
-
+    
+    <!-- Форма фильтрации -->
+    <div class="card bg-dark mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Фильтр задач</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label for="id_status" class="form-label">Статус</label>
+                    <select name="status" id="id_status" class="form-control">
+                        <option value="">Все статусы</option>
+                        {% for status in filter.form.status.field.queryset %}
+                            <option value="{{ status.id }}" 
+                                {% if filter.form.status.value == status.id|stringformat:"i" %}selected{% endif %}>
+                                {{ status.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="id_executor" class="form-label">Исполнитель</label>
+                    <select name="executor" id="id_executor" class="form-control">
+                        <option value="">Все исполнители</option>
+                        {% for user in filter.form.executor.field.queryset %}
+                            <option value="{{ user.id }}" 
+                                {% if filter.form.executor.value == user.id|stringformat:"i" %}selected{% endif %}>
+                                {{ user.get_full_name|default:user.username }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="id_labels" class="form-label">Метка</label>
+                    <select name="labels" id="id_labels" class="form-control">
+                        <option value="">Все метки</option>
+                        {% for label in filter.form.labels.field.queryset %}
+                            <option value="{{ label.id }}" 
+                                {% if filter.form.labels.value == label.id|stringformat:"i" %}selected{% endif %}>
+                                {{ label.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Только мои задачи</label>
+                    <div class="form-check mt-2">
+                        <input type="checkbox" name="only_my_tasks" id="id_only_my_tasks" 
+                               class="form-check-input" {% if filter.form.only_my_tasks.value %}checked{% endif %}>
+                        <label class="form-check-label" for="id_only_my_tasks">
+                            Показать только мои задачи
+                        </label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Применить фильтр</button>
+                    <a href="/tasks/" class="btn btn-secondary">Сбросить</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <div class="table-responsive">
         <table class="table table-dark table-striped">
             <thead>
@@ -36,9 +97,9 @@
                     <td>{{ task.executor.get_full_name|default:task.executor.username|default:"Не назначен" }}</td>
                     <td>
                         {% for label in task.labels.all %}
-                        <span class="badge bg-secondary">{{ label.name }}</span>
+                            <span class="badge bg-secondary">{{ label.name }}</span>
                         {% empty %}
-                        <span class="text-muted">—</span>
+                            <span class="text-muted">—</span>
                         {% endfor %}
                     </td>
                     <td>{{ task.created_at|date:"d.m.Y H:i" }}</td>
