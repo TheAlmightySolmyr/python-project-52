@@ -1,3 +1,5 @@
+.PHONY: install build migrate collectstatic dev render-start
+
 install:
 	uv sync
 
@@ -15,3 +17,9 @@ render-start:
 
 dev:
 	uv run manage.py runserver
+
+migrate:
+	python manage.py migrate
+
+collectstatic:
+	python manage.py collectstatic --noinput
