@@ -13,7 +13,7 @@ fix:
 	uv run ruff check --fix
 
 render-start:
-	gunicorn task_manager.wsgi
+	uv run gunicorn task_manager.wsgi
 
 dev:
 	uv run manage.py runserver
